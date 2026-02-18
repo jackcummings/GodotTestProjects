@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://c55hs07xslxre"]
+
+[ext_resource type="Script" uid="uid://qxx41dpiobyi" path="res://scripts/player.gd" id="1_glv2v"]
+[ext_resource type="Script" uid="uid://gyagdwfima3l" path="res://scripts/tile_grid.gd" id="2_uu6xs"]
+
+[node name="TileGrid" type="Node2D" unique_id=548480883]
+z_index = 3
+script = ExtResource("2_uu6xs")
+
+[node name="Player" type="Node2D" parent="." unique_id=1957434296]
+script = ExtResource("1_glv2v")
