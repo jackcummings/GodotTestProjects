@@ -1,0 +1,40 @@
+[gd_resource type="Resource" script_class="GameGlyphs" format=3 uid="uid://bi51dhd6kecqh"]
+
+[ext_resource type="Script" uid="uid://ct52lx0sac5du" path="res://scripts/glyphs/game_glyphs.gd" id="1_7tv5o"]
+[ext_resource type="Script" uid="uid://bfifjcpfqjo8i" path="res://scripts/glyphs/glyph.gd" id="1_dalir"]
+
+[sub_resource type="Resource" id="Resource_8ki3n"]
+script = ExtResource("1_dalir")
+glyph = " "
+metadata/_custom_type_script = "uid://bfifjcpfqjo8i"
+
+[sub_resource type="Resource" id="Resource_ehrxf"]
+script = ExtResource("1_dalir")
+glyph = "."
+metadata/_custom_type_script = "uid://bfifjcpfqjo8i"
+
+[sub_resource type="Resource" id="Resource_uwttx"]
+script = ExtResource("1_dalir")
+glyph = "@"
+color = Color(1, 1, 0, 1)
+metadata/_custom_type_script = "uid://bfifjcpfqjo8i"
+
+[sub_resource type="Resource" id="Resource_ydic0"]
+script = ExtResource("1_dalir")
+glyph = "t"
+color = Color(0.5529412, 1, 0.39607844, 1)
+metadata/_custom_type_script = "uid://bfifjcpfqjo8i"
+
+[sub_resource type="Resource" id="Resource_iqyxe"]
+script = ExtResource("1_dalir")
+glyph = "#"
+metadata/_custom_type_script = "uid://bfifjcpfqjo8i"
+
+[resource]
+script = ExtResource("1_7tv5o")
+floor = SubResource("Resource_ehrxf")
+wall = SubResource("Resource_iqyxe")
+empty = SubResource("Resource_8ki3n")
+player = SubResource("Resource_uwttx")
+torch = SubResource("Resource_ydic0")
+metadata/_custom_type_script = "uid://ct52lx0sac5du"

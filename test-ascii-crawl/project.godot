@@ -15,10 +15,9 @@ run/main_scene="uid://c55hs07xslxre"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
 
-[display]
+[autoload]
 
-window/size/viewport_width=1280
-window/size/viewport_height=400
+SignalBus="*uid://d1f8lrhka1y35"
 
 [physics]
 
@@ -27,3 +26,10 @@ window/size/viewport_height=400
 [rendering]
 
 rendering_device/driver.windows="d3d12"
+
+[shader_globals]
+
+player_screen_pos={
+"type": "vec2",
+"value": Vector2(5, 5)
+}
