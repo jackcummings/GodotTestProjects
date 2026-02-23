@@ -13,6 +13,40 @@ func update() -> void:
 		return
 	SignalBus.torches_updated.emit(torches)
 
+func remove_torches_in_room() -> void:
+	self.torches.clear()
+
+func draw_torches_in_room(GRID_SIZE_COLS, GRID_SIZE_ROWS, num_of_torches) -> void:
+		# Test torches
+		var torch_lst = [
+			[1, 1],
+			[20, 1],
+			[40, 1],
+			[60, 1],
+			[78, 1],
+			[1, GRID_SIZE_ROWS-2],
+			[20, GRID_SIZE_ROWS-2],
+			[40, GRID_SIZE_ROWS-2],
+			[60, GRID_SIZE_ROWS-2],
+			[78, GRID_SIZE_ROWS-2],
+			[1, (GRID_SIZE_ROWS-1) * (.33)],
+			[20, (GRID_SIZE_ROWS-1) * (.33)],
+			[40, (GRID_SIZE_ROWS-1) * (.33)],
+			[60, (GRID_SIZE_ROWS-1) * (.33)],
+			[78, (GRID_SIZE_ROWS-1) * (.33)],
+			[1, (GRID_SIZE_ROWS-1) * (.66)],
+			[20, (GRID_SIZE_ROWS-1) * (.66)],
+			[40, (GRID_SIZE_ROWS-1) * (.66)],
+			[60, (GRID_SIZE_ROWS-1) * (.66)],
+			[78, (GRID_SIZE_ROWS-1) * (.66)]
+		]
+
+		for i in num_of_torches:
+			var rand_i = randi() % torch_lst.size()
+			add_torch(torch_lst[rand_i][0], torch_lst[rand_i][1])
+			torch_lst.remove_at(rand_i)
+
+
 func add_torch(col: int, row: int) -> void:
 	torches.append({
 		col   = col,
