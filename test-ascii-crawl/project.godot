@@ -18,6 +18,8 @@ config/icon="res://icon.svg"
 [autoload]
 
 SignalBus="*uid://d1f8lrhka1y35"
+GlobalData="*uid://bxrb0olky4ytu"
+Utilities="*uid://cng6f2d1lk888"
 
 [physics]
 
@@ -25,6 +27,7 @@ SignalBus="*uid://d1f8lrhka1y35"
 
 [rendering]
 
+textures/canvas_textures/default_texture_filter=0
 rendering_device/driver.windows="d3d12"
 
 [shader_globals]

@@ -26,19 +26,17 @@ var player_rect:  ColorRect
 var torch_rect:   ColorRect
 var canvas:       Node2D
 var player:       Player
-var renderer:     Renderer
 var torch_system: TorchSystem
 var glyphs:       GameGlyphs
 var elapsed:      float = 0.0
 
 func _init(p_canvas: Node2D, p_player: Player,
 		   p_player_rect: ColorRect, p_torch_rect: ColorRect,
-		   p_renderer: Renderer, p_torch_system: TorchSystem) -> void:
+		   p_torch_system: TorchSystem) -> void:
 	canvas       = p_canvas
 	player       = p_player
 	player_rect  = p_player_rect
 	torch_rect   = p_torch_rect
-	renderer     = p_renderer
 	torch_system = p_torch_system
 	glyphs       = load(GLYPHS_PATH)
 
@@ -79,8 +77,7 @@ func _connect_signals() -> void:
 # Updates the 'player_screen_pos' shader global variable, which causes the shader/light 
 # to move with the player. (The shader directly uses/connects to that global variable )
 func _update_player_light(_col: int, _row: int) -> void:
-	#var pos = renderer.player_screen_pos(canvas, player)
-	var pos = renderer.tile_to_screen(canvas, _col, _row)
+	var pos = Utilities.tile_to_screen(canvas, _col, _row)
 	RenderingServer.global_shader_parameter_set("player_screen_pos", pos)
 
 # Called by tick (which is called from main on the _process function every frame).
@@ -95,7 +92,7 @@ func _update_torch_lights(_torches: Array) -> void:
 
 	for i in count:
 		var t = torches[i]
-		positions.append(renderer.tile_to_screen(canvas, t.col, t.row))
+		positions.append(Utilities.tile_to_screen(canvas, t.col, t.row))
 		radii.append(torch_system.animated_radius(t, elapsed))
 		colors.append(glyphs.torch.color)
 

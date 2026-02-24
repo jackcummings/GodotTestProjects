@@ -11,9 +11,6 @@ extends Node2D
 @onready var player_rect:  ColorRect = $EntityLightLayer/PlayerLightRect
 @onready var torch_rect:   ColorRect = $EntityLightLayer/TorchLightRect
 
-const GRID_SIZE_COLS = 80 
-const GRID_SIZE_ROWS = 45
-
 var tile_grid:	TileGrid
 var player:	Player
 var renderer:	Renderer
@@ -21,9 +18,13 @@ var torch_system:	TorchSystem
 var lighting:	LightingSystem
 
 func _ready() -> void:
-	tile_grid = TileGrid.new(GRID_SIZE_COLS, GRID_SIZE_ROWS)
+	tile_grid = TileGrid.new(GlobalData.grid_size_cols, 
+							 GlobalData.grid_size_rows)
+	renderer = Renderer.new(GlobalData.tile_width, 
+							GlobalData.tile_height, 
+							GlobalData.font_size, 
+							GlobalData.GLYPHS_PATH)
 	player = Player.new(5, 5)
-	renderer = Renderer.new()
 	torch_system = TorchSystem.new()
 	
 	# Test room
@@ -35,14 +36,14 @@ func _ready() -> void:
 	torch_system.add_torch(40, 1)
 	torch_system.add_torch(60, 1)
 	torch_system.add_torch(78, 1)
-	torch_system.add_torch(1, GRID_SIZE_ROWS-2)
-	torch_system.add_torch(20, GRID_SIZE_ROWS-2)
-	torch_system.add_torch(40, GRID_SIZE_ROWS-2)
-	torch_system.add_torch(60, GRID_SIZE_ROWS-2)
-	torch_system.add_torch(78, GRID_SIZE_ROWS-2)
+	torch_system.add_torch(1, GlobalData.grid_size_rows-2)
+	torch_system.add_torch(20, GlobalData.grid_size_rows-2)
+	torch_system.add_torch(40, GlobalData.grid_size_rows-2)
+	torch_system.add_torch(60, GlobalData.grid_size_rows-2)
+	torch_system.add_torch(78, GlobalData.grid_size_rows-2)
 	
 	# Setup camera
-	camera.setup(GRID_SIZE_COLS, GRID_SIZE_ROWS)
+	camera.setup(GlobalData.grid_size_cols, GlobalData.grid_size_rows)
 	tile_render_node.setup(renderer, tile_grid)
 	entity_render_node.setup(renderer, player, torch_system)
 
@@ -51,14 +52,21 @@ func _ready() -> void:
 	call_deferred("_init_lighting")
 
 func _init_lighting() -> void:
-	lighting = LightingSystem.new(tile_render_node, player, player_rect, torch_rect,
-								  renderer, torch_system)
+	lighting = LightingSystem.new(tile_render_node, player, player_rect, torch_rect, torch_system)
 
 	# Push current player position to global shaader variable player_screen_pos
 	var player_position = renderer.player_screen_pos(tile_render_node, player)
 	RenderingServer.global_shader_parameter_set("player_screen_pos", player_position)
 
 func _process(delta: float) -> void:
+	# Tick the player tween first so visual_pos is fresh before any draw calls
+	player.tick(delta)
+
+	# Keep player light shader in sync with the smooth visual position every frame
+	# (previously this only updated on the player_moved signal, which caused snapping)
+	#var player_position = renderer.player_screen_pos(tile_render_node, player)
+	#RenderingServer.global_shader_parameter_set("player_screen_pos", player_position)
+	
 	lighting.tick(delta)
 	tile_render_node.redraw()
 	entity_render_node.redraw()
