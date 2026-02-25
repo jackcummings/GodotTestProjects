@@ -8,11 +8,14 @@ var row: int
 # creating smooth movement between cells.
 var visual_pos: Vector2
 
-# Tween state
+# Tween state 
+# - tween_from/to is the current player position vs the target position.
+# - tween_t will be between 0 and 1.0 when the tween 'animation' is playing, 1.0 being done
+# - tween_dur is how long this tween 'animation' should last.
 var _tween_from: Vector2
 var _tween_to:   Vector2
 var _tween_t:    float = 1.0   # 0.0 = start, 1.0 = done
-var _tween_dur:  float = 0.10  # seconds — tweak for feel
+var _tween_dur:  float = 0.10  # seconds for tweening movement duration
 
 func _init(start_col: int, start_row: int) -> void:
 	col = start_col
@@ -21,9 +24,9 @@ func _init(start_col: int, start_row: int) -> void:
 	_tween_to  = visual_pos
 	_tween_from = visual_pos
 	
-func try_move(dc: int, dr: int, tile_grid: TileGrid) -> void:
-	var new_col = col + dc
-	var new_row = row + dr
+func try_move(direction_col: int, direction_row: int, tile_grid: TileGrid) -> void:
+	var new_col = col + direction_col
+	var new_row = row + direction_row
 	if tile_grid.is_walkable(new_col, new_row):
 		col = new_col
 		row = new_row
