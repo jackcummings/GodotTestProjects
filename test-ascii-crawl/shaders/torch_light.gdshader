@@ -15,7 +15,7 @@ uniform sampler2D SCREEN_TEXTURE : hint_screen_texture, filter_linear_mipmap;
 float light_intensity(vec2 frag_pos, vec2 light_pos, float radius) {
     float dist       = distance(frag_pos, light_pos);
     float normalized = clamp(dist / radius, 0.0, 1.0);
-    return pow(1.0 - normalized, falloff);
+    return pow(0.8 - normalized, falloff);
 }
 
 void fragment() {

@@ -45,3 +45,7 @@ func generate_simple_room() -> void:
 	for r in rows:
 		set_tile(0,        r, Type.WALL)
 		set_tile(cols - 1, r, Type.WALL)
+
+func populate_simple_room_rocks(num_of_walls) -> void:
+	for i in range(num_of_walls):
+		set_tile((randi() % cols) + 1, (randi() % rows) + 1, Type.WALL)
