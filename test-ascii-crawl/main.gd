@@ -19,6 +19,8 @@ var player:	Player
 var renderer:	Renderer
 var torch_system:	TorchSystem
 var lighting:	LightingSystem
+var num_of_torches = 7 # Not currently used as it is calculated by room size
+var num_of_walls = 100
 
 func _ready() -> void:
 	tile_grid = TileGrid.new(GRID_SIZE_COLS, GRID_SIZE_ROWS)
@@ -28,19 +30,14 @@ func _ready() -> void:
 	
 	# Test room
 	tile_grid.generate_simple_room()
+	tile_grid.populate_simple_room_rocks(num_of_walls)
 
 	# Test torches
-	torch_system.add_torch(1, 1)
-	torch_system.add_torch(20, 1)
-	torch_system.add_torch(40, 1)
-	torch_system.add_torch(60, 1)
-	torch_system.add_torch(78, 1)
-	torch_system.add_torch(1, GRID_SIZE_ROWS-2)
-	torch_system.add_torch(20, GRID_SIZE_ROWS-2)
-	torch_system.add_torch(40, GRID_SIZE_ROWS-2)
-	torch_system.add_torch(60, GRID_SIZE_ROWS-2)
-	torch_system.add_torch(78, GRID_SIZE_ROWS-2)
+	torch_system.draw_torches_in_room(GRID_SIZE_COLS, GRID_SIZE_ROWS, num_of_torches)
+
+	# Test entity
 	
+
 	# Setup camera
 	camera.setup(GRID_SIZE_COLS, GRID_SIZE_ROWS)
 	tile_render_node.setup(renderer, tile_grid)
@@ -75,3 +72,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.keycode in DIRECTIONS:
 		var dir = DIRECTIONS[event.keycode]
 		player.try_move(dir.x, dir.y, tile_grid)
+		
+	if event.keycode == KEY_R:
+		torch_system.remove_torches_in_room()
+		torch_system.draw_torches_in_room(GRID_SIZE_COLS, GRID_SIZE_ROWS, num_of_torches)

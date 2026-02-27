@@ -15,7 +15,7 @@ metadata/_custom_type_script = "uid://bfifjcpfqjo8i"
 
 [sub_resource type="Resource" id="Resource_uwttx"]
 script = ExtResource("1_dalir")
-glyph = "@"
+glyph = "웃"
 color = Color(1, 1, 0, 1)
 metadata/_custom_type_script = "uid://bfifjcpfqjo8i"
 
