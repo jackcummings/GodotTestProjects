@@ -5,11 +5,11 @@ extends Camera2D
 # - tween_from/to is the current player position vs the target position.
 # - tween_t will be between 0 and 1.0 when the tween 'animation' is playing, 1.0 being done
 # - tween_dur is how long the camera takes to reach the player's tile when it is moving.
-# -- A slightly longer duration than the player tween (0.10s) gives a nice feel
+# -- A slightly longer duration than the player tween gives a nice feel
 var _tween_from: Vector2
 var _tween_to:   Vector2
 var _tween_t:    float = 1.0
-var _tween_dur = 0.2
+var _tween_dur = 0.24
 
 func setup(grid_cols: int, grid_rows: int) -> void:
 	var limits = Utilities.grid_to_pixel(grid_cols, grid_rows)

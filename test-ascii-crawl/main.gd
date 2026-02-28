@@ -11,11 +11,15 @@ extends Node2D
 @onready var player_rect:  ColorRect = $EntityLightLayer/PlayerLightRect
 @onready var torch_rect:   ColorRect = $EntityLightLayer/TorchLightRect
 
+# Get references to ASCII UI layer
+@onready var ui_render_node: Node2D = $UILayer/UILayerNode
+
 var tile_grid:	TileGrid
 var player:	Player
 var renderer:	Renderer
 var torch_system:	TorchSystem
 var lighting:	LightingSystem
+var ascii_ui:     AsciiUI
 var num_of_torches = 7 # Not currently used as it is calculated by room size
 var num_of_walls = 100
 
@@ -34,26 +38,49 @@ func _ready() -> void:
 	tile_grid.populate_simple_room_rocks(num_of_walls)
 
 	# Test torches
-	torch_system.draw_torches_in_room(GRID_SIZE_COLS, GRID_SIZE_ROWS, num_of_torches)
+	torch_system.draw_torches_in_room(GlobalData.grid_size_cols, GlobalData.grid_size_rows, num_of_torches)
 
 	# Test entity
 	
-
 	# Setup camera
 	camera.setup(GlobalData.grid_size_cols, GlobalData.grid_size_rows)
 	tile_render_node.setup(renderer, tile_grid)
 	entity_render_node.setup(renderer, player, torch_system)
 
+	_setup_ui()
 	# Defer everything lighting-related until after the first frame to try and prevent
 	# any graphical glitches from everything not being quite loaded
 	call_deferred("_init_lighting")
 
+func _setup_ui() -> void:
+	ascii_ui = AsciiUI.new()
+
+	# Instantiate panels — each is self-contained.
+	var stats_panel = StatsPanel.new(player, 1, 1)
+	var log_panel   = MessageLogPanel.new(1, 10, 22, 5)
+
+	# Wire signals — panels define what they connect to, main decides when.
+	stats_panel.connect_signals()
+	log_panel.connect_signals()
+
+	ui_render_node.setup(ascii_ui, [stats_panel, log_panel])
+
+	# Register with ResizeHandler — must be done before apply_immediate()
+	ResizeHandler.ui_layer_node = ui_render_node
+	ResizeHandler.player_rect   = player_rect
+	ResizeHandler.torch_rect    = torch_rect
+
+	SignalBus.log_message.emit("You descend into the dark, dark, dark, dark, dark, dungeon.")
+	
 func _init_lighting() -> void:
 	lighting = LightingSystem.new(tile_render_node, player, player_rect, torch_rect, torch_system)
 
 	# Push current player position to global shaader variable player_screen_pos
 	var player_position = renderer.player_screen_pos(tile_render_node, player)
 	RenderingServer.global_shader_parameter_set("player_screen_pos", player_position)
+	
+	# Apply layout now that lighting rects exist and are registered
+	ResizeHandler.apply_immediate()
 
 func _process(delta: float) -> void:
 	# Tick the player tween first so visual_pos is fresh before any draw calls
@@ -67,6 +94,7 @@ func _process(delta: float) -> void:
 	lighting.tick(delta)
 	tile_render_node.redraw()
 	entity_render_node.redraw()
+	ui_render_node.redraw()
 
 func _unhandled_input(event: InputEvent) -> void:
 	if not (event is InputEventKey and event.pressed):
@@ -83,4 +111,4 @@ func _unhandled_input(event: InputEvent) -> void:
 		
 	if event.keycode == KEY_R:
 		torch_system.remove_torches_in_room()
-		torch_system.draw_torches_in_room(GRID_SIZE_COLS, GRID_SIZE_ROWS, num_of_torches)
+		torch_system.draw_torches_in_room(GlobalData.grid_size_cols, GlobalData.grid_size_rows, num_of_torches)

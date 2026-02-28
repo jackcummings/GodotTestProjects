@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://l371tf1j8ho4" path="res://camera_2d.gd" id="2_cm0pq"]
 [ext_resource type="Script" uid="uid://o56uelywtmvg" path="res://tile_layer_node.gd" id="2_uu6xs"]
 [ext_resource type="Script" uid="uid://cvdga7rtprva0" path="res://entity_layer_node.gd" id="3_r0du0"]
+[ext_resource type="Script" uid="uid://di8p08yon40dd" path="res://ui_layer_node.gd" id="5_fos0i"]
 
 [node name="Main" type="Node2D" unique_id=2101074060]
 script = ExtResource("1_r0du0")
@@ -16,7 +17,6 @@ follow_viewport_enabled = true
 
 [node name="TileLayerNode" type="Node2D" parent="TileLayer" unique_id=1507172009]
 script = ExtResource("2_uu6xs")
-metadata/_edit_use_anchors_ = true
 
 [node name="EntityLayer" type="CanvasLayer" parent="." unique_id=150987242]
 layer = 2
@@ -24,24 +24,21 @@ follow_viewport_enabled = true
 
 [node name="EntityLayerNode" type="Node2D" parent="EntityLayer" unique_id=1665989313]
 script = ExtResource("3_r0du0")
-metadata/_edit_use_anchors_ = true
 
 [node name="EntityLightLayer" type="CanvasLayer" parent="." unique_id=1939927666]
 layer = 3
 
 [node name="PlayerLightRect" type="ColorRect" parent="EntityLightLayer" unique_id=754146019]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-metadata/_edit_use_anchors_ = true
+offset_right = 1152.0
+offset_bottom = 720.0
 
 [node name="TorchLightRect" type="ColorRect" parent="EntityLightLayer" unique_id=1987062388]
-z_index = -1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-metadata/_edit_use_anchors_ = true
+offset_right = 1152.0
+offset_bottom = 720.0
+
+[node name="UILayer" type="CanvasLayer" parent="." unique_id=268075224]
+layer = 10
+
+[node name="UILayerNode" type="Node2D" parent="UILayer" unique_id=894873933]
+position = Vector2(1152, 0)
+script = ExtResource("5_fos0i")

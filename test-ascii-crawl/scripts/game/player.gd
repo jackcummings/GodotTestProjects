@@ -3,6 +3,11 @@ class_name Player
 var col: int
 var row: int
 
+var hp: int = 20
+var max_hp: int = 20
+var mp: int = 10
+var max_mp: int = 20
+
 # Visual (pixel) position used by the renderer for drawing.
 # This is tweened toward the logical tile position each frame,
 # creating smooth movement between cells.
@@ -15,7 +20,7 @@ var visual_pos: Vector2
 var _tween_from: Vector2
 var _tween_to:   Vector2
 var _tween_t:    float = 1.0   # 0.0 = start, 1.0 = done
-var _tween_dur:  float = 0.10  # seconds for tweening movement duration
+var _tween_dur:  float = 0.12  # seconds for tweening movement duration
 
 func _init(start_col: int, start_row: int) -> void:
 	col = start_col
