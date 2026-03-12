@@ -1,7 +1,7 @@
 class_name GameCamera
 extends Camera2D
 
-# Tween state 
+# Tween state TODO: Make configurable?
 # - tween_from/to is the current player position vs the target position.
 # - tween_t will be between 0 and 1.0 when the tween 'animation' is playing, 1.0 being done
 # - tween_dur is how long the camera takes to reach the player's tile when it is moving.

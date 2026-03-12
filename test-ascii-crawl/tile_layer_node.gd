@@ -3,8 +3,8 @@
 # see this where it passes 'self' to the renderer object for drawing.
 extends Node2D
 
-var renderer:  Renderer
-var tile_grid:  TileGrid
+var renderer:	Renderer
+var tile_grid:	TileGrid
 
 func setup(p_renderer: Renderer, p_tile_grid: TileGrid) -> void:
 	renderer = p_renderer

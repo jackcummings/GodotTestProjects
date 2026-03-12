@@ -17,4 +17,4 @@ func for_tile(type: TileGrid.Type) -> Glyph:
 	match type:
 		TileGrid.Type.FLOOR: return floor
 		TileGrid.Type.WALL:  return wall
-		_:                  return empty
+		_:                   return empty

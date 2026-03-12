@@ -6,7 +6,7 @@ func grid_to_pixel(cols: int, rows: int) -> Vector2:
 func grid_center_to_pixel(c: int, r: int) -> Vector2:
 	return grid_to_pixel(c, r) + (Vector2(GlobalData.tile_width, GlobalData.tile_height) * 0.5)
 
-# AI... 
+# AI generated tween helper
 func ease_out_cubic(t: float) -> float:
 	return 1.0 - pow(1.0 - t, 3.0)
 

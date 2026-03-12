@@ -9,8 +9,8 @@ var player:       Player
 var torch_system: TorchSystem
 
 func setup(p_renderer: Renderer, p_player: Player, p_torch_system: TorchSystem) -> void:
-	renderer     = p_renderer
-	player       = p_player
+	renderer	 = p_renderer
+	player		 = p_player
 	torch_system = p_torch_system
 
 func redraw() -> void:

@@ -1,28 +1,32 @@
 class_name TileGrid
+extends RefCounted
 
+# Public Variables
 enum Type { EMPTY, FLOOR, WALL }
 
 var cols: int
 var rows: int
-var cells: Array = []
+
+# Private Variables
+var _cells: Array = []
 
 func _init(p_cols: int, p_rows: int) -> void:
 	cols = p_cols
 	rows = p_rows
-	cells = []
+	_cells = []
 	for r in rows:
 		var row = []
 		for c in cols:
 			row.append(Type.EMPTY)
-		cells.append(row)
+		_cells.append(row)
 
 func set_tile(col: int, row: int, type: Type) -> void:
 	if in_bounds(col, row):
-		cells[row][col] = type
+		_cells[row][col] = type
 
 func get_tile(col: int, row: int) -> Type:
 	if in_bounds(col, row):
-		return cells[row][col]
+		return _cells[row][col]
 	return Type.EMPTY
 
 func is_walkable(col: int, row: int) -> bool:
@@ -40,12 +44,21 @@ func generate_simple_room() -> void:
 		for c in range(1, cols - 1):
 			set_tile(c, r, Type.FLOOR)
 	for c in cols:
-		set_tile(c, 0,        Type.WALL)
-		set_tile(c, rows - 1, Type.WALL)
-	for r in rows:
-		set_tile(0,        r, Type.WALL)
-		set_tile(cols - 1, r, Type.WALL)
+		set_tile(c, 0,			Type.WALL)
+		set_tile(c, rows - 1,	Type.WALL)
+	for r in rows:		
+		set_tile(0, r,			Type.WALL)
+		set_tile(cols - 1, r,	Type.WALL)
 
-func populate_simple_room_rocks(num_of_walls) -> void:
+func populate_simple_room_rocks(num_of_walls: int, player: Player) -> void:
+	var player_pos: Vector2i = player.get_player_pos()
 	for i in range(num_of_walls):
-		set_tile((randi() % cols) + 1, (randi() % rows) + 1, Type.WALL)
+		var r_col = (randi() % cols) + 1
+		var r_row = (randi() % rows) + 1
+		
+		while(get_tile(r_col, r_row) != Type.FLOOR 
+			  and (r_col != player_pos.x and r_row != player_pos.y)):
+			r_col = (randi() % cols) + 1
+			r_row = (randi() % rows) + 1
+			
+		set_tile(r_col, r_row, Type.WALL)

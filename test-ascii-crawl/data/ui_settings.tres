@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="UISettings" format=3 uid="uid://drsmfcycny5r4"]
+
+[ext_resource type="Script" uid="uid://dulep076tdp3l" path="res://scripts/configs/ui_settings.gd" id="1_ii71o"]
+
+[resource]
+script = ExtResource("1_ii71o")
+sp_title_color = Color(0.69803923, 0.8509804, 1, 1)
+sp_border_color = Color(0.4509804, 0.4509804, 0.54901963, 1)
+sp_text_color = Color(0.8509804, 0.8509804, 0.8509804, 1)
+sp_sep_color = Color(0.34901962, 0.34901962, 0.34901962, 1)
+mp_title_color = Color(0.6, 0.8980392, 0.6, 1)
+mp_border_color = Color(0.4, 0.49803922, 0.4, 1)
+mp_text_color = Color(0.7490196, 0.8509804, 0.7490196, 1)
+mp_sep_color = Color(0.34901962, 0.34901962, 0.34901962, 1)

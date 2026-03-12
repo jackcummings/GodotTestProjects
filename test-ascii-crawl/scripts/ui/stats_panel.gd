@@ -1,49 +1,48 @@
 # Displays player stats: HP, MP, floor, gold.
-# Connects to SignalBus signals to keep itself up to date.
+# Connects to SignalBus signals to catch any
 #
 # Usage in main.gd:
 #   var stats_panel = StatsPanel.new(player, 1, 1)
-#   stats_panel.connect_signals()
 class_name StatsPanel
 extends UIPanel
 
 # Row indices — named constants so updates are readable, not magic numbers
-const ROW_HP    = 0
-const ROW_MP    = 1
-const ROW_SEP   = 2
-const ROW_FLOOR = 3
-const ROW_GOLD  = 4
+const ROW_HP	= 0
+const ROW_MP	= 1
+const ROW_SEP	= 2
+const ROW_FLOOR	= 3
+const ROW_GOLD	= 4
 
 var _player: Player
 
-func _init(p_player: Player, p_col: int, p_row: int) -> void:
+func _init(p_player: Player, p_panel_settings: UISettings, p_col: int, p_row: int) -> void:
 	_player = p_player
-
-	super(p_col, p_row, 22, [
-		_hp_text(),
-		_mp_text(),
-		null,              # separator
+	_panel_settings = p_panel_settings # panel_settings is on the base UIPanel class
+	
+	# 
+	super(p_col, p_row, 24, [
+		_hp_text(),		# First line is HP
+		_mp_text(),		# Then MP
+		null,			# A null gives a separator
 		_floor_text(),
 		_gold_text(),
 	])
-
 	with_title(" Stats ")
-	border_color = Color(0.45, 0.45, 0.55)
-	title_color  = Color(0.7, 0.85, 1.0)
-
-func connect_signals() -> void:
+	with_colors(_panel_settings.sp_title_color, _panel_settings.sp_text_color, 
+				_panel_settings.sp_border_color, _panel_settings.sp_sep_color)
+				
+	_connect_signals()
+	
+func _connect_signals() -> void:
 	SignalBus.player_stats_changed.connect(_on_stats_changed)
-	SignalBus.floor_changed.connect(_on_floor_changed)
 
 func _on_stats_changed() -> void:
-	rows[ROW_HP] = _hp_text()
-	rows[ROW_MP] = _mp_text()
+	data_rows[ROW_HP] = _hp_text()
+	data_rows[ROW_MP] = _mp_text()
 
-func _on_floor_changed(floor_num: int) -> void:
-	rows[ROW_FLOOR] = "Floor : %d" % floor_num
-
+# --------------------------
 # --- Formatting helpers ---
-
+# --------------------------
 func _hp_text() -> String:
 	return "HP : %s %d/%d" % [
 		_bar(_player.hp, _player.max_hp, 8),
@@ -64,7 +63,7 @@ func _floor_text() -> String:
 func _gold_text() -> String:
 	return "Gold  : 0"
 
-# Renders a simple ASCII bar, e.g. "[████░░░░]"
+# Renders a simple ASCII bar, e.g. "[████░░░░]" - Thanks Google AI search thing!
 func _bar(current: int, maximum: int, bar_width: int) -> String:
 	if maximum <= 0:
 		return "[" + "░".repeat(bar_width) + "]"
