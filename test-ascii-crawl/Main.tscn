@@ -4,44 +4,58 @@
 [ext_resource type="Script" uid="uid://l371tf1j8ho4" path="res://camera_2d.gd" id="2_cm0pq"]
 [ext_resource type="Script" uid="uid://o56uelywtmvg" path="res://tile_layer_node.gd" id="2_uu6xs"]
 [ext_resource type="Script" uid="uid://cvdga7rtprva0" path="res://entity_layer_node.gd" id="3_r0du0"]
+[ext_resource type="Script" uid="uid://di8p08yon40dd" path="res://ui_layer_node.gd" id="5_fos0i"]
 
 [node name="Main" type="Node2D" unique_id=2101074060]
 script = ExtResource("1_r0du0")
 
-[node name="Camera2D" type="Camera2D" parent="." unique_id=1350380876]
+[node name="GameViewportContainer" type="SubViewportContainer" parent="." unique_id=535126243]
+offset_right = 1152.0
+offset_bottom = 720.0
+stretch = true
+
+[node name="GameViewport" type="SubViewport" parent="GameViewportContainer" unique_id=469832860]
+handle_input_locally = false
+size = Vector2i(1152, 720)
+render_target_update_mode = 4
+
+[node name="Camera2D" type="Camera2D" parent="GameViewportContainer/GameViewport" unique_id=1350380876]
 script = ExtResource("2_cm0pq")
 
-[node name="TileLayer" type="CanvasLayer" parent="." unique_id=1548843098]
+[node name="TileLayer" type="CanvasLayer" parent="GameViewportContainer/GameViewport" unique_id=1548843098]
 follow_viewport_enabled = true
 
-[node name="TileLayerNode" type="Node2D" parent="TileLayer" unique_id=1507172009]
+[node name="TileLayerNode" type="Node2D" parent="GameViewportContainer/GameViewport/TileLayer" unique_id=1507172009]
 script = ExtResource("2_uu6xs")
-metadata/_edit_use_anchors_ = true
 
-[node name="EntityLayer" type="CanvasLayer" parent="." unique_id=150987242]
+[node name="EntityLayer" type="CanvasLayer" parent="GameViewportContainer/GameViewport" unique_id=150987242]
 layer = 2
 follow_viewport_enabled = true
 
-[node name="EntityLayerNode" type="Node2D" parent="EntityLayer" unique_id=1665989313]
+[node name="EntityLayerNode" type="Node2D" parent="GameViewportContainer/GameViewport/EntityLayer" unique_id=1665989313]
 script = ExtResource("3_r0du0")
-metadata/_edit_use_anchors_ = true
 
-[node name="EntityLightLayer" type="CanvasLayer" parent="." unique_id=1939927666]
-layer = 3
+[node name="EntityLightLayer" type="CanvasLayer" parent="GameViewportContainer/GameViewport" unique_id=1939927666]
+layer = 4
 
-[node name="PlayerLightRect" type="ColorRect" parent="EntityLightLayer" unique_id=754146019]
+[node name="PlayerLightRect" type="ColorRect" parent="GameViewportContainer/GameViewport/EntityLightLayer" unique_id=754146019]
+z_index = 2
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-metadata/_edit_use_anchors_ = true
 
-[node name="TorchLightRect" type="ColorRect" parent="EntityLightLayer" unique_id=1987062388]
-z_index = -1
+[node name="TorchLightRect" type="ColorRect" parent="GameViewportContainer/GameViewport/EntityLightLayer" unique_id=1987062388]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-metadata/_edit_use_anchors_ = true
+
+[node name="UILayer" type="CanvasLayer" parent="." unique_id=268075224]
+layer = 10
+
+[node name="UILayerNode" type="Node2D" parent="UILayer" unique_id=894873933]
+position = Vector2(1152, 0)
+script = ExtResource("5_fos0i")

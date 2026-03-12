@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="GameGlyphs" format=3 uid="uid://bi51dhd6kecqh"]
 
-[ext_resource type="Script" uid="uid://ct52lx0sac5du" path="res://scripts/glyphs/game_glyphs.gd" id="1_7tv5o"]
-[ext_resource type="Script" uid="uid://bfifjcpfqjo8i" path="res://scripts/glyphs/glyph.gd" id="1_dalir"]
+[ext_resource type="Script" uid="uid://bfifjcpfqjo8i" path="res://scripts/game/glyph.gd" id="1_dalir"]
+[ext_resource type="Script" uid="uid://ct52lx0sac5du" path="res://scripts/configs/game_glyphs.gd" id="2_8ki3n"]
 
 [sub_resource type="Resource" id="Resource_8ki3n"]
 script = ExtResource("1_dalir")
@@ -31,7 +31,7 @@ glyph = "#"
 metadata/_custom_type_script = "uid://bfifjcpfqjo8i"
 
 [resource]
-script = ExtResource("1_7tv5o")
+script = ExtResource("2_8ki3n")
 floor = SubResource("Resource_ehrxf")
 wall = SubResource("Resource_iqyxe")
 empty = SubResource("Resource_8ki3n")

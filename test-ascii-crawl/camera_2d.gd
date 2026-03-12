@@ -1,26 +1,35 @@
 class_name GameCamera
 extends Camera2D
 
-const TILE_W = Renderer.TILE_W
-const TILE_H = Renderer.TILE_H
+# Tween state TODO: Make configurable?
+# - tween_from/to is the current player position vs the target position.
+# - tween_t will be between 0 and 1.0 when the tween 'animation' is playing, 1.0 being done
+# - tween_dur is how long the camera takes to reach the player's tile when it is moving.
+# -- A slightly longer duration than the player tween gives a nice feel
+var _tween_from: Vector2
+var _tween_to:   Vector2
+var _tween_t:    float = 1.0
+var _tween_dur = 0.24
 
-# Setup camera and connect the track_player function to the
-# 'player_moved' signal, which is emitted by player.gd under
-# try_move()
 func setup(grid_cols: int, grid_rows: int) -> void:
-	# Clamp camera so it never shows outside the grid
+	var limits = Utilities.grid_to_pixel(grid_cols, grid_rows)
+	
 	limit_left   = 0
 	limit_top    = 0
-	limit_right  = grid_cols * TILE_W
-	limit_bottom = grid_rows * TILE_H
-	
-	SignalBus.player_moved.connect(track_player)
+	limit_right  = limits.x
+	limit_bottom = limits.y
 
-# Shift the camera position to follow the player (unless it runs into the
-# clamps set above)
-func track_player(_col: int, _row: int) -> void:
-	# Center the camera on the player's tile (pixel center of that tile)
-	position = Vector2(
-		_col * TILE_W + TILE_W * 0.5,
-		_row * TILE_H + TILE_H * 0.5
-	)
+	SignalBus.player_moved.connect(_on_player_moved)
+
+# When player moves, set the 'tween from' position to the current camera position,
+# and the 'tween to' to 
+func _on_player_moved(col: int, row: int) -> void:
+	_tween_from = position
+	_tween_to = Utilities.grid_center_to_pixel(col, row)
+	_tween_t = 0.0
+
+func _process(delta: float) -> void:
+	if _tween_t >= 1.0:
+		return
+	_tween_t  = minf(_tween_t + delta / _tween_dur, 1.0)
+	position  = _tween_from.lerp(_tween_to, Utilities.ease_out_cubic(_tween_t))

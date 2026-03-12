@@ -1,4 +1,5 @@
 class_name Entity
+extends RefCounted
 
 var col: int
 var row: int
